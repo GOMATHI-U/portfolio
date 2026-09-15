@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOMATHI U — Pikku's Little Corner</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+    :root {
+      --liminal-bg: #EAE6FE;
+      --grid-line: #D0C6F7;
+      --panel-bg: rgba(255, 255, 255, 0.95);
+      --border-dark: #2A1F3D;
+      --pink-light: #FFC6D9;
+      --pink-blush: #FF498B;
+      --purple-liminal: #7047EB;
+      --cyan-glow: #38E5FF;
+      --yellow-arcade: #FFD23F;
+      --mint-green: #06D6A0;
+      --text-main: #2A1F3D;
+      --text-muted: #5C4B75;
+      --shadow-retro: 6px 6px 0px #2A1F3D;
+      --shadow-hover: 10px 10px 0px #2A1F3D;
+      --cream: #FFF9FC;
+      --lavender-soft: #EEE9FF;
+      --peach: #FFE2D2;
+      --star-gold: #F7C948;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--liminal-bg);
+      background-image:
+        linear-gradient(var(--grid-line) 2px, transparent 2px),
+        linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
+      background-size: 40px 40px;
+      background-position: center center;
+      color: var(--text-main);
+      font-family: 'VT323', monospace;
+      font-size: 21px;
+      line-height: 1.4;
+      overflow-x: hidden;
+      /* NORMAL PIXELATED ARROW CURSOR */
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'><path fill='%232A1F3D' d='M0 0v16l4-4 3 4 2-1-3-4 5 0z'/><path fill='%23FFFFFF' d='M1 2v11l3-3 3 4 1-0.5-3-4 4 0z'/></svg>") 0 0, auto;
+    }
+
+    .pixel-font {
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    /* RETRO CRT & FOG OVERLAY */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9000;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.06) 50%);
+      background-size: 100% 4px;
+    }
+
+    .liminal-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8999;
+      background: radial-gradient(circle at center, transparent 40%, rgba(112, 71, 235, 0.12) 100%);
+    }
+
+    /* HEADER & NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 198, 217, 0.95);
+      backdrop-filter: blur(4px);
+      border-bottom: 4px solid var(--border-dark);
+      box-shadow: 0 4px 0 var(--border-dark);
+      padding: 12px 20px;
+    }
+
+    nav {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo-box {
+      background: var(--yellow-arcade);
+      padding: 6px 12px;
+      border: 3px solid var(--border-dark);
+      box-shadow: 3px 3px 0 var(--border-dark);
+      color: var(--border-dark);
+      font-size: 12px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 10px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      background: var(--panel-bg);
+      color: var(--border-dark);
+      text-decoration: none;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      padding: 8px 12px;
+      border: 3px solid var(--border-dark);
+      box-shadow: 3px 3px 0 var(--border-dark);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    nav a:hover {
+      background: var(--cyan-glow);
+      transform: translateY(-4px);
+      box-shadow: 5px 7px 0 var(--border-dark);
+    }
+
+    /* MAIN LAYOUT */
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* HERO SECTION */
+    .hero-card {
+      background: var(--panel-bg);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      align-items: center;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    @media (max-width: 768px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .pixel-canvas-frame {
+        margin: 0 auto;
+      }
+    }
+
+    /* PIKKU WINDOW — HERO ILLUSTRATION */
+    .pikku-window {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 198, 217, .35) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 30%, rgba(56, 229, 255, .28) 0 2px, transparent 3px),
+        linear-gradient(180deg, #211633 0%, #150F24 100%);
+      background-size: 72px 72px, 90px 90px, auto;
+      border: 4px solid var(--purple-liminal);
+      box-shadow: 5px 5px 0 var(--border-dark);
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pikku-window::before {
+      content: "PIKKU // PERSONAL LOG";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--yellow-arcade);
+      color: var(--border-dark);
+      border: 2px solid var(--border-dark);
+      padding: 5px 7px;
+      font: 8px 'Press Start 2P', cursive;
+      z-index: 2;
+    }
+
+    .pikku-window::after {
+      content: "♥";
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      color: var(--pink-light);
+      font: 20px 'Press Start 2P', cursive;
+      animation: heartFloat 2s ease-in-out infinite;
+    }
+
+    .pikku-hero-art {
+      width: 150px;
+      height: 150px;
+      image-rendering: pixelated;
+      filter: drop-shadow(7px 7px 0 #0B0812);
+      animation: pikkuBob 2.4s steps(2) infinite;
+    }
+
+    .pikku-caption {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      text-align: center;
+      color: #fff;
+      font: 11px 'Press Start 2P', cursive;
+      line-height: 1.6;
+    }
+
+    @keyframes pikkuBob {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-7px);
+      }
+    }
+
+    @keyframes heartFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .8;
+      }
+
+      50% {
+        transform: translateY(-5px);
+        opacity: 1;
+      }
+    }
+
+    /* LITTLE PERSONALITY STRIP */
+    .pikku-notes {
+      margin-top: 18px;
+      background: var(--cream);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 18px;
+      position: relative;
+    }
+
+    .pikku-notes-title {
+      display: inline-block;
+      background: var(--peach);
+      border: 2px solid var(--border-dark);
+      padding: 5px 8px;
+      font: 9px 'Press Start 2P', cursive;
+      margin-bottom: 12px;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .note {
+      background: #F4F0FF;
+      border: 2px solid var(--border-dark);
+      padding: 11px;
+      min-height: 78px;
+      font-size: 18px;
+    }
+
+    .note strong {
+      display: block;
+      color: var(--purple-liminal);
+      font: 9px 'Press Start 2P', cursive;
+      margin-bottom: 7px;
+    }
+
+    @media (max-width: 768px) {
+      .note-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background: var(--purple-liminal);
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+      border: 2px solid var(--border-dark);
+    }
+
+    /* ANIMATED TYPEWRITER NAME */
+    .name-container {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 24px;
+      color: var(--pink-blush);
+      min-height: 36px;
+      margin: 0 0 10px;
+      text-shadow: 3px 3px 0 var(--border-dark);
+      display: flex;
+      align-items: center;
+    }
+
+    .type-cursor {
+      display: inline-block;
+      width: 12px;
+      height: 24px;
+      background: var(--purple-liminal);
+      margin-left: 6px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .hero-subtitle {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      color: var(--purple-liminal);
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      font-size: 22px;
+      line-height: 1.35;
+      background: #F4F0FF;
+      border: 3px solid var(--border-dark);
+      padding: 14px;
+      margin-bottom: 22px;
+    }
+
+    .btn-start {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--yellow-arcade);
+      color: var(--border-dark);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 13px;
+      padding: 14px 22px;
+      text-decoration: none;
+      border: 4px solid var(--border-dark);
+      box-shadow: 5px 5px 0 var(--border-dark);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-start:hover {
+      background: var(--mint-green);
+      transform: translateY(-4px);
+      box-shadow: 8px 9px 0 var(--border-dark);
+    }
+
+    .stats-bar {
+      margin-top: 25px;
+      background: var(--purple-liminal);
+      color: white;
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stats-bar:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .stat-item span {
+      color: var(--yellow-arcade);
+    }
+
+    /* RETRO SECTION POP-UP & XP ANIMATIONS */
+    section {
+      margin-top: 60px;
+      opacity: 0;
+      transform: translateY(30px) scale(0.97);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+      position: relative;
+    }
+
+    section.section-reveal {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* FLOATING +10 XP POP-UP */
+    .xp-float {
+      position: absolute;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      color: var(--yellow-arcade);
+      text-shadow: 2px 2px 0 var(--border-dark);
+      pointer-events: none;
+      z-index: 5000;
+      animation: floatXP 1.2s ease-out forwards;
+    }
+
+    @keyframes floatXP {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(-30px) scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-60px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-header h2 {
+      font-size: 16px;
+      color: var(--border-dark);
+      background: var(--pink-light);
+      padding: 8px 16px;
+      border: 4px solid var(--border-dark);
+      box-shadow: 4px 4px 0 var(--border-dark);
+      margin: 0;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .section-header h2:hover {
+      transform: translateY(-3px);
+      box-shadow: 6px 7px 0 var(--border-dark);
+    }
+
+    /* INVENTORY / SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .inventory-box {
+      background: var(--panel-bg);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .inventory-box:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .inventory-box h3 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      color: var(--purple-liminal);
+      margin-top: 0;
+      border-bottom: 3px dashed var(--border-dark);
+      padding-bottom: 8px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: #F4F0FF;
+      border: 2px solid var(--border-dark);
+      padding: 4px 10px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 2px 2px 0 var(--border-dark);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .chip:hover {
+      background: var(--yellow-arcade);
+      transform: translateY(-3px);
+    }
+
+    /* QUEST LOG */
+    .quest-card {
+      background: var(--panel-bg);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .quest-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .quest-card::before {
+      content: "★ QUEST";
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      background: var(--yellow-arcade);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      padding: 4px 8px;
+      border: 2px solid var(--border-dark);
+    }
+
+    .quest-date {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      color: var(--purple-liminal);
+    }
+
+    .quest-title {
+      font-size: 26px;
+      color: var(--pink-blush);
+      margin: 4px 0;
+    }
+
+    .quest-org {
+      font-size: 20px;
+      color: var(--text-muted);
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--panel-bg);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .level-badge {
+      background: var(--purple-liminal);
+      color: #fff;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      padding: 4px 8px;
+      align-self: flex-start;
+      border: 2px solid var(--border-dark);
+    }
+
+    .project-card h3 {
+      font-size: 22px;
+      color: var(--border-dark);
+      margin: 10px 0;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .tech-tag {
+      background: var(--cyan-glow);
+      border: 2px solid var(--border-dark);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 8px;
+      padding: 4px 6px;
+    }
+
+    /* ACHIEVEMENTS */
+    .achieve-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .achieve-card {
+      background: var(--panel-bg);
+      border: 3px solid var(--border-dark);
+      box-shadow: 4px 4px 0 var(--border-dark);
+      padding: 14px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .achieve-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 7px 7px 0 var(--border-dark);
+    }
+
+    .achieve-icon {
+      font-size: 30px;
+      background: var(--yellow-arcade);
+      border: 2px solid var(--border-dark);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* CONTACT SECTION & MODAL */
+    .contact-section {
+      background: var(--panel-bg);
+      border: 4px solid var(--border-dark);
+      box-shadow: var(--shadow-retro);
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .contact-section:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .social-btn {
+      background: var(--cyan-glow);
+      color: var(--border-dark);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      padding: 12px 18px;
+      text-decoration: none;
+      border: 3px solid var(--border-dark);
+      box-shadow: 4px 4px 0 var(--border-dark);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .social-btn:hover {
+      background: var(--pink-blush);
+      color: #fff;
+      transform: translateY(-4px);
+      box-shadow: 6px 8px 0 var(--border-dark);
+    }
+
+    #contact-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 31, 61, 0.75);
+      z-index: 20000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #contact-modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--panel-bg);
+      border: 6px solid var(--border-dark);
+      box-shadow: 10px 10px 0 #000;
+      max-width: 520px;
+      width: 100%;
+      padding: 24px;
+    }
+
+    .modal-header {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 13px;
+      color: var(--pink-blush);
+      margin-top: 0;
+      border-bottom: 4px solid var(--border-dark);
+      padding-bottom: 10px;
+    }
+
+    .contact-detail-item {
+      background: #F4F0FF;
+      border: 3px solid var(--border-dark);
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      transition: transform 0.15s ease;
+    }
+
+    .contact-detail-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-copy {
+      background: var(--yellow-arcade);
+      border: 2px solid var(--border-dark);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .btn-close {
+      background: var(--pink-blush);
+      color: white;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      padding: 10px 20px;
+      border: 3px solid var(--border-dark);
+      box-shadow: 3px 3px 0 var(--border-dark);
+      cursor: pointer;
+    }
+
+    /* PIXEL OUTLINE MASCOT ("PIKKU") */
+    #pikku-wrapper {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 15000;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.05s steps(1);
+    }
+
+    .pikku-speech {
+      position: absolute;
+      bottom: 85px;
+      right: 0;
+
+      background: var(--panel-bg);
+      border: 3px solid var(--border-dark);
+      box-shadow: 4px 4px 0 var(--border-dark);
+
+      padding: 8px 12px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+
+      /* IMPORTANT */
+      white-space: normal;
+      width: max-content;
+      max-width: min(280px, 70vw);
+
+      line-height: 1.5;
+      text-align: center;
+      overflow-wrap: break-word;
+
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      z-index: 15001;
+    }
+
+
+
+    .pikku-speech.show {
+      opacity: 1;
+    }
+
+    .pikku-pixel-art {
+      width: 72px;
+      height: 72px;
+      filter: drop-shadow(4px 4px 0px #2A1F3D);
+      shape-rendering: crispEdges;
+    }
+
+    .cyber-glitch-active {
+      animation: cyberGlitchBurst 0.35s steps(2) infinite;
+    }
+
+    @keyframes cyberGlitchBurst {
+      0% {
+        transform: translate(6px, -4px) skewX(15deg);
+        filter: drop-shadow(-4px 0px 0px #38E5FF) drop-shadow(4px 0px 0px #FF498B) invert(0.1);
+      }
+
+      25% {
+        transform: translate(-8px, 5px) skewX(-20deg);
+        filter: drop-shadow(5px -2px 0px #FFD23F) hue-rotate(180deg);
+      }
+
+      50% {
+        transform: translate(4px, 6px) scaleY(0.6) skewX(30deg);
+        filter: drop-shadow(-5px 2px 0px #7047EB);
+      }
+
+      75% {
+        transform: translate(-3px, -6px) scaleX(1.3);
+        filter: drop-shadow(3px -3px 0px #38E5FF) invert(0.3);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(1) skewX(0);
+        filter: drop-shadow(4px 4px 0px #2A1F3D);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <div class="crt-overlay"></div>
+  <div class="liminal-vignette"></div>
+
+  <header>
+    <nav>
+      <div class="logo-box pixel-font">GOMATHI_U.SYS v2.6</div>
+      <ul>
+        <li><a href="#hero" onclick="playBeep()">HERO</a></li>
+        <li><a href="#inventory" onclick="playBeep()">ITEMS</a></li>
+        <li><a href="#quest-log" onclick="playBeep()">QUESTS</a></li>
+        <li><a href="#levels" onclick="playBeep()">LEVELS</a></li>
+        <li><a href="#pikku-verdict" onclick="playBeep()">PIKKU</a></li>
+        <li><a href="#achievements" onclick="playBeep()">BADGES</a></li>
+        <li><a href="#contact" onclick="openContactModal()">CONTACT</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- HERO SECTION WITH CURSOR PIXEL SPIRAL CANVAS -->
+    <section id="hero" class="section-reveal">
+      <div class="hero-card">
+
+        <!-- PIKKU'S LITTLE WINDOW -->
+        <div class="pikku-window">
+          <svg class="pikku-hero-art" viewBox="0 0 32 32" aria-label="Pikku pixel mascot">
+            <!-- clean pixel ghost-cat outline -->
+            <path fill="#2A1F3D" d="M7 4h5V2h3v2h2V2h3v2h5v3h2v14h-2v4h-4v3H10v-3H6v-4H4V9h3z" />
+            <path fill="#FFC6D9" d="M8 6h5v3h6V6h5v4h2v10h-3v4h-4v2H11v-2H7v-4H6V10h2z" />
+            <path fill="#2A1F3D" d="M10 13h3v3h-3zm9 0h3v3h-3z" />
+            <path fill="#FF498B" d="M7 17h3v2H7zm15 0h3v2h-3z" />
+            <path fill="#2A1F3D" d="M14 18h4v2h-4z" />
+            <path fill="#7047EB" d="M14 21h4v2h-4z" />
+            <path fill="#FFD23F" d="M4 5h2v2H4zm24 3h2v2h-2zM2 20h2v2H2z" />
+          </svg>
+          <div class="pikku-caption">Pikku says: yes, this is the main character.</div>
+        </div>
+
+        <div>
+          <span class="badge-tag">2027 · CSE UNDERGRADUATE</span>
+
+          <!-- ANIMATED TYPEWRITER NAME -->
+          <div class="name-container">
+            <span id="typed-name"></span><span class="type-cursor"></span>
+          </div>
+
+          <div class="hero-subtitle">SOFTWARE DEVELOPER · ML RESEARCHER · BUILDER</div>
+          <p class="hero-desc">
+            I build practical things with Java, Spring Boot, React.js and ML — while collecting
+            projects, certifications and a slightly unreasonable number of things I want to learn next.
+          </p>
+          <button class="btn-start" onclick="openContactModal()">
+            <span> PRESS START</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pikku-notes">
+        <div class="pikku-notes-title">PIKKU'S NOTES ABOUT GOMATHI</div>
+        <div class="note-grid">
+          <div class="note"><strong>COMFORT LANGUAGE</strong>Java. She comes back to it like it never left.👩‍💻</div>
+          <div class="note"><strong>JAPAN ARC</strong>JLPT N5 cleared. N4 is currently loading. 🌸</div>
+          <div class="note"><strong>RESEARCH MODE</strong>From classroom concepts to real-world research. 🔬</div>
+
+        </div>
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="stats-bar">
+        <div class="stat-item">HP: <span>100/100</span></div>
+        <div class="stat-item">MP: <span>∞ (JAVA/PYTHON)</span></div>
+        <div class="stat-item">CGPA: <span>8.53</span></div>
+        <div class="stat-item">COLLEGE: <span>R.M.K. ENGG. College</span></div>
+      </div>
+    </section>
+
+    <!-- INVENTORY / SKILLS -->
+    <section id="inventory">
+      <div class="section-header">
+        <h2 class="pixel-font">🎒 INVENTORY (SKILLS)</h2>
+      </div>
+
+      <div class="skills-grid">
+        <div class="inventory-box">
+          <h3>PROGRAMMING</h3>
+          <div class="chip-list">
+            <span class="chip">Java</span>
+            <span class="chip">Python</span>
+            <span class="chip">C++</span>
+          </div>
+        </div>
+
+        <div class="inventory-box">
+          <h3>DEVELOPMENT</h3>
+          <div class="chip-list">
+            <span class="chip">Spring Boot</span>
+            <span class="chip">React.js</span>
+            <span class="chip">REST APIs</span>
+            <span class="chip">HTML/CSS</span>
+            <span class="chip">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="inventory-box">
+          <h3>CLOUD &amp; DATA</h3>
+          <div class="chip-list">
+            <span class="chip">AWS</span>
+            <span class="chip">GCP</span>
+            <span class="chip">MySQL</span>
+          </div>
+        </div>
+
+        <div class="inventory-box">
+          <h3>TOOLS</h3>
+          <div class="chip-list">
+            <span class="chip">Git</span>
+            <span class="chip">ServiceNow</span>
+            <span class="chip">Figma</span>
+            <span class="chip">Google Colab</span>
+          </div>
+        </div>
+        <div class="inventory-box">
+          <h3>CURRENTLY EXPLORING</h3>
+          <div class="chip-list">
+            <span class="chip">Angular</span>
+            <span class="chip">GenAI</span>
+            <span class="chip">AI Agents</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUEST LOG / EXPERIENCE -->
+    <section id="quest-log">
+      <div class="section-header">
+        <h2 class="pixel-font">📜 QUEST LOG (EXPERIENCE)</h2>
+      </div>
+
+      <div class="quest-card">
+        <div class="quest-date">JAN 2026 — PRESENT</div>
+        <div class="quest-title">Student Researcher</div>
+        <div class="quest-org">NexArcRise — India–Japan Collaborative Research Initiative, Thiruvallur</div>
+        <ul>
+          <li>Collaborating on an Indo–Japan research initiative to develop ML models for automated bearing fault
+            diagnosis and predictive maintenance.</li>
+          <li>Designing, training and evaluating ML models with faculty mentors to improve fault classification
+            performance using Python, scikit-learn and Google Colab.</li>
+        </ul>
+      </div>
+
+      <div class="quest-card">
+        <div class="quest-date">JUN 2025</div>
+        <div class="quest-title">Data Science Trainee</div>
+        <div class="quest-org">NSIC Technical Service Center, Chennai</div>
+        <ul>
+          <li>Performed exploratory data analysis and preprocessing on real-world datasets using Python, applying
+            visualization and statistical analysis techniques.</li>
+          <li>Developed and evaluated regression-based ML models for predictive analytics using Python and Google Colab.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- LEVEL SELECT / PROJECTS -->
+    <section id="levels">
+      <div class="section-header">
+        <h2 class="pixel-font">🕹️ LEVEL SELECT (PROJECTS)</h2>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <div>
+            <span class="level-badge">LEVEL 01</span>
+            <h3>Smart Academic Task Scheduling &amp; Evaluation Platform</h3>
+            <p>Role-based academic management platform for task assignment, submission tracking, evaluation and workload
+              management with RESTful APIs.</p>
+          </div>
+          <div class="tech-tags">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Spring Boot</span>
+            <span class="tech-tag">React.js</span>
+            <span class="tech-tag">MySQL</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div>
+            <span class="level-badge">LEVEL 02</span>
+            <h3>Real-Time Motor Fault Prediction Using ML</h3>
+            <p>Built a machine learning-based fault detection system using embedded sensor data for real-time motor
+              condition monitoring &amp; fault classification.</p>
+          </div>
+          <div class="tech-tags">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">scikit-learn</span>
+            <span class="tech-tag">Google Colab</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PIKKU VERDICT -->
+    <section id="pikku-verdict">
+      <div class="section-header">
+        <h2 class="pixel-font">💌 PIKKU'S VERDICT</h2>
+      </div>
+      <div class="quest-card">
+        <div class="quest-title">"Curious by nature. Driven by progress. Always building."</div>
+        <p style="font-size:22px; margin-bottom:8px;">
+          Likes things that are useful, well-built, and thoughtfully designed. She collects skills, projects, and small
+          achievements — each one becoming a step toward something bigger.
+        </p>
+        <p style="font-size:19px; color:var(--text-muted); margin:0;">
+          Pikku's professional opinion: <strong>a work in progress, with plenty more to come.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements">
+      <div class="section-header">
+        <h2 class="pixel-font">🏆 BADGES UNLOCKED</h2>
+      </div>
+
+      <div class="achieve-grid">
+        <div class="achieve-card">
+          <div class="achieve-icon">🌟</div>
+          <div>
+            <h4 style="margin:0; font-family:'Press Start 2P'; font-size:10px;">Rising Innovator Award</h4>
+            <p style="margin:4px 0 0; font-size:16px;">Indo–Japan Collaborative Research</p>
+          </div>
+        </div>
+
+        <div class="achieve-card">
+          <div class="achieve-icon">🥇</div>
+          <div>
+            <h4 style="margin:0; font-family:'Press Start 2P'; font-size:10px;">Best Paper Award</h4>
+            <p style="margin:4px 0 0; font-size:16px;">AI Surveillance — IETE</p>
+          </div>
+        </div>
+
+        <div class="achieve-card">
+          <div class="achieve-icon">📜</div>
+          <div>
+            <h4 style="margin:0; font-family:'Press Start 2P'; font-size:10px;">ServiceNow CSA</h4>
+            <p style="margin:4px 0 0; font-size:16px;">Certified System Administrator</p>
+          </div>
+        </div>
+
+        <div class="achieve-card">
+          <div class="achieve-icon">💻</div>
+          <div>
+            <h4 style="margin:0; font-family:'Press Start 2P'; font-size:10px;">ServiceNow CAD</h4>
+            <p style="margin:4px 0 0; font-size:16px;">Certified Application Developer</p>
+          </div>
+        </div>
+
+        <div class="achieve-card">
+          <div class="achieve-icon">🌸</div>
+          <div>
+            <h4 style="margin:0; font-family:'Press Start 2P'; font-size:10px;">JLPT N5 CERTIFIED</h4>
+            <p style="margin:4px 0 0; font-size:16px;">Japanese Language Proficiency</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+      <h2 class="pixel-font" style="color:var(--pink-blush); margin-top:0;">💌 LET'S BUILD SOMETHING</h2>
+      <p style="font-size:22px;">Have an idea, opportunity, or interesting problem? Pikku says we should talk.</p>
+
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/gomathi-uthayakumar/" target="_blank" class="social-btn"
+          onclick="playBeep()">LINKEDIN</a>
+        <a href="https://github.com/GOMATHI-U" target="_blank" class="social-btn" onclick="playBeep()">GITHUB</a>
+        <a href="https://leetcode.com/u/gomathi_u/" target="_blank" class="social-btn" onclick="playBeep()">LEETCODE</a>
+        <button class="social-btn" style="background:var(--yellow-arcade);" onclick="openContactModal()">DIRECT
+          CONTACT</button>
+      </div>
+    </section>
+
+    <footer>
+      R.M.K. ENGINEERING COLLEGE · B.E. CSE (HONS. DATA SCIENCE) · CGPA 8.53 · MADE WITH A LITTLE HELP FROM PIKKU
+    </footer>
+
+  </div>
+
+  <!-- SILENT MASCOT ("PIKKU") WITH TELEPORT & CYBER GLITCH -->
+  <div id="pikku-wrapper" onclick="interactPikku()">
+    <div class="pikku-speech" id="pikku-bubble">Pikku.exe is reviewing your Big-O...</div>
+
+    <svg class="pikku-pixel-art" id="pikku-svg" viewBox="0 0 20 20">
+      <!-- Outer Black Pixel Outline -->
+      <path fill="#2A1F3D" d="
+      M5 1h3v1h4V1h3v1h1v2h1v2h1v8h-1v2h-1v1h-2v1H6v-1H4v-1H3v-2H2V6h1V4h1V2h1V1z
+    " />
+      <!-- Light Pink Body Fill -->
+      <path fill="#FFC6D9" d="
+      M6 2h1v1H6zm6 0h1v1h-1zm-6 2h8v2H5V5h1V4zm-2 2h14v7H4V6zm2 7h8v1H6v-1zm1 1h6v1H7v-1z
+    " />
+      <!-- Eyes -->
+      <path fill="#2A1F3D" d="M6 8h2v2H6zm6 0h2v2h-2z" />
+      <!-- Blush Cheeks -->
+      <path fill="#FF498B" d="M4 10h2v1H4zm10 0h2v1h-2z" />
+      <!-- Mouth -->
+      <path fill="#2A1F3D" d="M9 11h2v1H9z" />
+    </svg>
+  </div>
+
+  <!-- CONTACT DIALOG MODAL -->
+  <div id="contact-modal" onclick="closeModalOnOutside(event)">
+    <div class="modal-box">
+      <h3 class="modal-header">👾 PLAYER CONTACT DETAILS</h3>
+      <div class="modal-content">
+        <div class="contact-detail-item">
+          <span>📧 gomathiuthaya05@gmail.com</span>
+          <button class="btn-copy" onclick="copyText('gomathiuthaya05@gmail.com')">COPY</button>
+        </div>
+        <div class="contact-detail-item">
+          <span>📞 +91 8248679662</span>
+          <button class="btn-copy" onclick="copyText('+918248679662')">COPY</button>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <a href="mailto:gomathiuthaya05@gmail.com" class="social-btn" style="font-size:9px;">SEND EMAIL</a>
+        <button class="btn-close" onclick="closeContactModal()">CLOSE [X]</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============ TYPEWRITER ANIMATION FOR NAME ============
+    const nameText = "GOMATHI U";
+    const typedNameEl = document.getElementById('typed-name');
+    let charIndex = 0;
+
+    function typeName() {
+      if (charIndex < nameText.length) {
+        typedNameEl.textContent += nameText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeName, 120);
+      }
+    }
+    window.addEventListener('load', typeName);
+
+    // ============ SECTION POP-UP & FLOATING +10 XP ============
+    const sections = document.querySelectorAll('section');
+
+    function triggerXP(el) {
+      const xp = document.createElement('div');
+      xp.className = 'xp-float';
+      xp.innerText = '+10 XP';
+      xp.style.top = '10px';
+      xp.style.right = '20px';
+      el.appendChild(xp);
+      setTimeout(() => xp.remove(), 1200);
+    }
+
+    const observerOptions = { threshold: 0.2 };
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-reveal');
+          playBeep();
+          triggerXP(entry.target);
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(sec => {
+      if (sec.id !== 'hero') sectionObserver.observe(sec);
+    });
+
+    // ============ GENTLE PIXEL AMBIENCE ============
+    // The hero illustration is intentionally static and cute.
+    // Keeping it simple makes the mascot feel like a character, not a screensaver.
+
+    // ============ RETRO AUDIO SYSTEM ============
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); }
+
+    function playBeep() {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    // ============ SILENT CYBER GLITCH & TELEPORT ENGINE ============
+    const pikkuWrapper = document.getElementById('pikku-wrapper');
+    const pikkuSvg = document.getElementById('pikku-svg');
+    const pikkuBubble = document.getElementById('pikku-bubble');
+
+    const quotes = [
+      "TMI : Gomathi LOVES coffee !!!",
+      "Pikku has reviewed the portfolio. Approved. Obviously.",
+      "Java is the comfort zone.",
+      "I'll Tell you a Joke about TCP. Did you get it? Did you get it?",
+      "Pikku knows who the main character is.",
+      "Why do programmers wear glasses? Because they can't C#.",
+      "BRB. I am too iconic for this world",
+      "I don’t seek attention. Attention seeks me.",
+      "I moved 300 pixels. Please remain calm.",
+      "They hate me because they can’t afford to be me.",
+      "I am not lazy. I am on energy-saving mode.",
+      "They call me hard to ignore. Mission accomplished.",
+      "They call me a TLE. I take my time.",
+      "git commit: moved again.",
+      "Mirror, mirror… still me. Perfect.",
+      "The algorithm says I’m beautiful. The algorithm is correct."
+
+    ];
+
+    const defaultBottom = 25;
+    const defaultRight = 25;
+
+    function performGlitchTeleport(targetBottom, targetRight, customQuote) {
+      pikkuSvg.classList.add('cyber-glitch-active');
+
+      if (customQuote) {
+        pikkuBubble.innerText = customQuote;
+        pikkuBubble.classList.add('show');
+      }
+
+      setTimeout(() => {
+        pikkuWrapper.style.bottom = targetBottom + 'px';
+        pikkuWrapper.style.right = targetRight + 'px';
+      }, 150);
+
+      setTimeout(() => {
+        pikkuSvg.classList.remove('cyber-glitch-active');
+      }, 350);
+
+      // Keep speech visible for 5 seconds
+      clearTimeout(pikkuBubble.hideTimer);
+
+      pikkuBubble.hideTimer = setTimeout(() => {
+        pikkuBubble.classList.remove('show');
+      }, 5000);
+    }
+
+
+    function interactPikku() {
+      const margin = 30;
+
+      const pikkuWidth = pikkuWrapper.offsetWidth || 72;
+      const pikkuHeight = pikkuWrapper.offsetHeight || 72;
+
+      const maxRight = Math.max(
+        margin,
+        window.innerWidth - pikkuWidth - margin
+      );
+
+      const maxBottom = Math.max(
+        margin,
+        window.innerHeight - pikkuHeight - margin
+      );
+
+      const randomRight =
+        margin + Math.floor(Math.random() * (maxRight - margin + 1));
+
+      const randomBottom =
+        margin + Math.floor(Math.random() * (maxBottom - margin + 1));
+
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+
+      performGlitchTeleport(
+        randomBottom,
+        randomRight,
+        q
+      );
+    }
+
+
+    // 👇 AUTOMATIC RANDOM MOVEMENT
+    setInterval(() => {
+      interactPikku();
+    }, 9000);
+
+    // MODAL CONTROL
+    function openContactModal() {
+      playBeep();
+      document.getElementById('contact-modal').classList.add('active');
+    }
+    function closeContactModal() {
+      playBeep();
+      document.getElementById('contact-modal').classList.remove('active');
+    }
+    function closeModalOnOutside(e) {
+      if (e.target.id === 'contact-modal') closeContactModal();
+    }
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      playBeep();
+      alert('Copied to clipboard: ' + text);
+    }
+    function interactPikku() {
+      const margin = 40;
+
+      const pikkuWidth = pikkuWrapper.offsetWidth || 72;
+      const pikkuHeight = pikkuWrapper.offsetHeight || 72;
+
+      // Extra space so the speech bubble doesn't hit the top
+      const bubbleSpace = 120;
+
+      const maxRight = window.innerWidth - pikkuWidth - margin;
+      const maxBottom = window.innerHeight - pikkuHeight - margin;
+
+      const randomRight =
+        margin + Math.floor(
+          Math.random() * Math.max(1, maxRight - margin)
+        );
+
+      const randomBottom =
+        bubbleSpace + Math.floor(
+          Math.random() * Math.max(1, maxBottom - bubbleSpace)
+        );
+
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+
+      performGlitchTeleport(
+        randomBottom,
+        randomRight,
+        q
+      );
+    }
+  </script>
+
+
+
+</body>
+
+</html>
+<style>
+  @media (max-width: 700px) {
+    .pikku-click-hint {
+      display: none !important;
+    }
+  }
+</style>
